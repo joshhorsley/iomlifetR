@@ -4,12 +4,13 @@
 #'
 #' @description Calculate the change in life expectancy associated with a reduction in risk of death
 #' @param demog_data A data frame with columns of headed "age" (the age at which each age group begins), "population" (the size of the population) and "deaths" (the number of deaths in the population).
-#' @param start_age A numeric vector. The starting age of each age group
 #' @param min_age_at_risk Numeric vector. The lowest age susceptible to air pollution.
 #' @param pm_concentration A number. The population weighted-mean PM2.5 concentration of interest.
 #' @param RR A number. Specifies the relative risk from an epidemiologiccal study.
 #' @param neonatal_deaths Logical. Are neonatal deaths included?
 #' @param unit A number. Speficies the unit change associated with the relative risk (RR).
+#' @param custom_hr Logical. Whether to use a provided hazard ratio vector. Default FALSE. This will ignore RR, min_age_at_risk, pm_concentration, unit
+#' @param hr Age varying hazard ratio. Must be same length as demog_data rows
 #'
 #' @return A list of 3 elements:
 #' \itemize{
@@ -41,14 +42,21 @@
 #' x[[1]][1, 2] # Change in LE at birth (days)
 burden_le <- function(demog_data, min_age_at_risk = 30,
                       pm_concentration = 1, RR = 1.06, unit = 10,
-                      neonatal_deaths = TRUE){
-  # Caclulate additional risk associated with.
-  rr <- RR^(-pm_concentration / unit)
-  ages_at_risk <- min_age_at_risk:max(demog_data$age)
-
-
-  # Align rr with ages at risk. If age is not at risk, rr = 1.
-  impact <- ifelse(demog_data$age %in% ages_at_risk, rr, 1)
+                      neonatal_deaths = TRUE,
+                      custom_hr = FALSE,
+                      hr){
+  
+  if(!custom_hr){
+    # Caclulate additional risk associated with.
+    rr <- RR^(-pm_concentration / unit)
+    ages_at_risk <- min_age_at_risk:max(demog_data$age)
+  
+    # Align rr with ages at risk. If age is not at risk, rr = 1.
+    impact <- ifelse(demog_data$age %in% ages_at_risk, rr, 1)
+  } else {
+    stopifnot(nrow(demog_data) == length(hr))
+    impact <- 1/hr
+  }
 
   baseline_hazard <- demog_data$deaths / demog_data$population
   impacted_hazard <- baseline_hazard * impact

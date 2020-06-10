@@ -4,8 +4,7 @@
 \alias{impact_factor}
 \title{Calculate the Impact Factor in future years}
 \usage{
-impact_factor(delta_pm = 1, lag_structure = 1, RR = 1.06,
-  unit = 10)
+impact_factor(delta_pm = 1, lag_structure = 1, RR = 1.06, unit = 10)
 }
 \arguments{
 \item{delta_pm}{A numeric vector. The annual reduction from baseline of

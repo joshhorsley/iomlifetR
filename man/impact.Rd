@@ -4,9 +4,17 @@
 \alias{impact}
 \title{An implementation of the IOMLIFET impact spreadsheets}
 \usage{
-impact(demog_data, delta_pm = 1, lag_structure = 1, RR = 1.06,
-  unit = 10, max_age = 105, base_year = 2013, min_age_at_risk = 30,
-  neonatal_deaths = TRUE)
+impact(
+  demog_data,
+  delta_pm = 1,
+  lag_structure = 1,
+  RR = 1.06,
+  unit = 10,
+  max_age = 105,
+  base_year = 2013,
+  min_age_at_risk = 30,
+  neonatal_deaths = TRUE
+)
 }
 \arguments{
 \item{demog_data}{A data frame with three numeric columns headed "age" (the age at which each age group begins),
@@ -25,6 +33,8 @@ This is taken from epidemiological studies}
 \item{max_age}{The maximum age to use for the assessment}
 
 \item{base_year}{The base year for the assessment}
+
+\item{min_age_at_risk}{Numeric vector. The lowest age susceptible to air pollution.}
 
 \item{neonatal_deaths}{Logical. Are neonatal deaths included?}
 }

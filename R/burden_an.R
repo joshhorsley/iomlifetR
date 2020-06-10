@@ -1,11 +1,6 @@
 #' The attributable number
 #'
-#' @param demog_data A data frame with columns of headed "age" (the age at which each age group begins), "population" (the size of the population) and "deaths" (the number of deaths in the population).
-#' @param start_age A numeric vector. The starting age of each age group
-#' @param ages_at_risk A numeric vector. The age groups exposed to risk.
-#' @param pm_concentration A number. The population weighted-mean PM2.5 concentration of interest.
-#' @param RR A number. Specifies the relative risk from an epidemiologiccal study.
-#' @param unit A number. Speficies the unit change associated with the relative risk (RR).
+#' @inheritParams burden_le
 #'
 #' @return A numeric vector of age-specific attributable numbers.
 #' @export
@@ -26,13 +21,21 @@
 #'
 #' burden_an(demog_data)
 burden_an <- function(demog_data, min_age_at_risk = 30,
-                      pm_concentration = 1, RR = 1.06, unit = 10){
-  # Calculate the RR associated with pm_concentration
-  rr <- RR^(-pm_concentration / unit)
-  ages_at_risk <- min_age_at_risk:max(demog_data$age)
-
-  # Align rr with ages at risk. If age is not at risk, rr = 1.
-  impact <- ifelse(demog_data$age %in% ages_at_risk, rr, 1)
+                      pm_concentration = 1, RR = 1.06, unit = 10, 
+                      custom_hr = FALSE,
+                      hr){
+  
+  if(!custom_hr){
+    # Caclulate additional risk associated with.
+    rr <- RR^(-pm_concentration / unit)
+    ages_at_risk <- min_age_at_risk:max(demog_data$age)
+    
+    # Align rr with ages at risk. If age is not at risk, rr = 1.
+    impact <- ifelse(demog_data$age %in% ages_at_risk, rr, 1)
+  } else {
+    stopifnot(nrow(demog_data) == length(hr))
+    impact <- 1/hr
+  }
 
   hazard <- demog_data$deaths / demog_data$population
   an <- hazard * (1 - impact) * demog_data$population

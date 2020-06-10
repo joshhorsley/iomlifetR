@@ -4,11 +4,20 @@
 \alias{burden_an}
 \title{The attributable number}
 \usage{
-burden_an(demog_data, min_age_at_risk = 30, pm_concentration = 1,
-  RR = 1.06, unit = 10)
+burden_an(
+  demog_data,
+  min_age_at_risk = 30,
+  pm_concentration = 1,
+  RR = 1.06,
+  unit = 10,
+  custom_hr = FALSE,
+  hr
+)
 }
 \arguments{
 \item{demog_data}{A data frame with columns of headed "age" (the age at which each age group begins), "population" (the size of the population) and "deaths" (the number of deaths in the population).}
+
+\item{min_age_at_risk}{Numeric vector. The lowest age susceptible to air pollution.}
 
 \item{pm_concentration}{A number. The population weighted-mean PM2.5 concentration of interest.}
 
@@ -16,9 +25,9 @@ burden_an(demog_data, min_age_at_risk = 30, pm_concentration = 1,
 
 \item{unit}{A number. Speficies the unit change associated with the relative risk (RR).}
 
-\item{start_age}{A numeric vector. The starting age of each age group}
+\item{custom_hr}{Logical. Whether to use a provided hazard ratio vector. Default FALSE. This will ignore RR, min_age_at_risk, pm_concentration, unit}
 
-\item{ages_at_risk}{A numeric vector. The age groups exposed to risk.}
+\item{hr}{Age varying hazard ratio. Must be same length as demog_data rows}
 }
 \value{
 A numeric vector of age-specific attributable numbers.

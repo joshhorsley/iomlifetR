@@ -13,6 +13,7 @@
 
 #' burden_af(RR = 1.14, pm_concentration = 0.5)
 burden_af <- function(RR = 1.062, unit = 10, pm_concentration = 1) {
+  warning("This function is hard coded to log-linear CRF")
   rr <- RR^(pm_concentration / unit)
   af <- (rr-1)/rr
   af

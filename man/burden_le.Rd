@@ -4,8 +4,16 @@
 \alias{burden_le}
 \title{An implementation of the IOM life expectancy spreadsheets}
 \usage{
-burden_le(demog_data, min_age_at_risk = 30, pm_concentration = 1,
-  RR = 1.06, unit = 10, neonatal_deaths = TRUE)
+burden_le(
+  demog_data,
+  min_age_at_risk = 30,
+  pm_concentration = 1,
+  RR = 1.06,
+  unit = 10,
+  neonatal_deaths = TRUE,
+  custom_hr = FALSE,
+  hr
+)
 }
 \arguments{
 \item{demog_data}{A data frame with columns of headed "age" (the age at which each age group begins), "population" (the size of the population) and "deaths" (the number of deaths in the population).}
@@ -20,7 +28,9 @@ burden_le(demog_data, min_age_at_risk = 30, pm_concentration = 1,
 
 \item{neonatal_deaths}{Logical. Are neonatal deaths included?}
 
-\item{start_age}{A numeric vector. The starting age of each age group}
+\item{custom_hr}{Logical. Whether to use a provided hazard ratio vector. Default FALSE. This will ignore RR, min_age_at_risk, pm_concentration, unit}
+
+\item{hr}{Age varying hazard ratio. Must be same length as demog_data rows}
 }
 \value{
 A list of 3 elements:

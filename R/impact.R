@@ -14,6 +14,7 @@
 #' @param max_age The maximum age to use for the assessment
 #' @param base_year The base year for the assessment
 #' @param neonatal_deaths Logical. Are neonatal deaths included?
+#' @inheritParams burden_le
 #'
 #' @return A dataframe of five columns of:
 #'     \itemize{
